@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Times Table Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .question {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #fff;
+            border-radius: 0; /* Sharp corners */
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            border-radius: 0; /* Sharp corners */
+        }
+        .button:hover {
+            background-color: #ddd;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .table-toggle {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-toggle">
+            <label>
+                <input type="radio" name="table" value="3" checked onclick="generateQuestion()"> Table of 3
+            </label>
+            <label>
+                <input type="radio" name="table" value="4" onclick="generateQuestion()"> Table of 4
+            </label>
+        </div>
+        <div class="question" id="question">What is 3 x ?</div>
+        <input type="number" id="answer" class="input-field" placeholder="Enter your answer">
+        <button class="button" onclick="checkAnswer()">Submit</button>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        let randomNumber;
+        let selectedTable = 3;
+
+        // Function to generate a new question
+        function generateQuestion() {
+            // Update selectedTable based on the selected radio button
+            selectedTable = parseInt(document.querySelector('input[name="table"]:checked').value);
+            randomNumber = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+            document.getElementById('question').textContent = `What is ${selectedTable} x ${randomNumber}?`;
+            document.getElementById('answer').value = ''; // Clear the input field
+            document.getElementById('feedback').textContent = ''; // Clear any feedback
+        }
+
+        // Function to check the user's answer
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value;
+            const correctAnswer = selectedTable * randomNumber;
+
+            if (parseInt(userAnswer) === correctAnswer) {
+                document.getElementById('feedback').textContent = 'Correct! Well done!';
+                generateQuestion(); // Generate a new question after a correct answer
+            } else {
+                document.getElementById('feedback').textContent = 'Incorrect. Try again!';
+            }
+        }
+
+        // Event listener for pressing "Enter" in the input field
+        document.getElementById('answer').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Generate the first question when the page loads
+        generateQuestion();
+    </script>
+</body>
+</html>
